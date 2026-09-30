@@ -1,0 +1,70 @@
+name: multitenant_saas
+
+services:
+  
+  db:
+
+    image: postgres:16-alpine
+
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: access
+      POSTGRES_DB: saas_db
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    ports:
+      - "5432:5432"
+    
+    networks:
+      - backend-networks
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d saas_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s 
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    networks:
+      - backend-networks
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:access@db:5432/saas_db
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - backend-networks
+
+
+      
+networks:
+  backend-networks:
+
+volumes:
+  postgres_data:
+
+  redis_data:
+    
