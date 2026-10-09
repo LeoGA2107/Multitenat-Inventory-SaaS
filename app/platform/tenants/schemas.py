@@ -36,3 +36,10 @@ class TenantResponse(BaseModel):
     updated_at:datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class GetUser(BaseModel):
+    user:str
+
+class TokenData(BaseModel):
+    username:str

@@ -13,7 +13,7 @@ class TimestampMixin:
 class Tenant(Base, TimestampMixin):
     __tablename__="tenants"
     tenant_id : Mapped[int] = mapped_column(index=True, primary_key=True)
-    name : Mapped[str] = mapped_column()
+    tenantname : Mapped[str] = mapped_column()
     slug: Mapped[str]= mapped_column(unique=True, index=True)
     users: Mapped[List["User"]]=relationship(back_populates="tenant")
 
@@ -21,7 +21,7 @@ class Tenant(Base, TimestampMixin):
 class User(Base, TimestampMixin):
     __tablename__="users"
     user_id : Mapped[int]=mapped_column(index=True, primary_key=True)
-    name : Mapped[str]=mapped_column()
+    username : Mapped[str]=mapped_column()
     email : Mapped[str] = mapped_column(unique = True, index=True)
     phone_number:Mapped[int]=mapped_column()
     password : Mapped [str]=mapped_column()
