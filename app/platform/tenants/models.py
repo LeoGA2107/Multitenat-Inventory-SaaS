@@ -24,6 +24,7 @@ class User(Base, TimestampMixin):
     username : Mapped[str]=mapped_column()
     email : Mapped[str] = mapped_column(unique = True, index=True)
     phone_number:Mapped[int]=mapped_column()
+    role:Mapped[str]=mapped_column()
     password : Mapped [str]=mapped_column()
 
     tenant: Mapped["Tenant"]=relationship(back_populates="users")

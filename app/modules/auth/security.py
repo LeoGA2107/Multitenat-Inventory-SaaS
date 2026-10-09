@@ -5,7 +5,7 @@ from jwt.exceptions import InvalidTokenError
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
-from app.platform.tenants.schemas import TokenData, GetUser
+from app.platform.tenants.schemas import UserCreate
 from app.core.database import get_db
 from app.platform.tenants.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,7 +25,9 @@ def hash_password(password:str):
     # Hash the password
     hashed_password = bcrypt.hashpw(pw_bytes, salt)
 
-    return hashed_password.decode('utf-8')
+    return hashed_password
+
+
 
 
 
@@ -82,6 +84,10 @@ async def get_current_user(
         headers={"WWW-Authenticate":"Bearer"}
     )
 
+
+
+    
+    # Decoding the payload to get the token
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str |None = payload.get("sub")
@@ -91,7 +97,7 @@ async def get_current_user(
         raise credentials_exceptions
 
 
-
+    #Quering the database
     query= select(User).where(User.username == username)
     results = await db.scalars(query)
     fetch_users = results.first()
@@ -100,6 +106,9 @@ async def get_current_user(
         return credentials_exceptions
 
     return fetch_users
+
+
+
 
 
 

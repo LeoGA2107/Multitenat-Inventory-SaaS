@@ -4,6 +4,15 @@ from typing import Optional
 
 # User schemas
 
+class TenantUserCreate(BaseModel):
+    company_name:str
+    slug:str
+    name:str
+    email:EmailStr
+    phone_number:Optional[str]=None
+    role:str
+    password:str
+
 class UserCreate(BaseModel):
     name:str
     email:EmailStr
@@ -41,5 +50,3 @@ class TenantResponse(BaseModel):
 class GetUser(BaseModel):
     user:str
 
-class TokenData(BaseModel):
-    username:str
