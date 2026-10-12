@@ -20,6 +20,12 @@ class UserCreate(BaseModel):
     phone_number:Optional[str]=None
     password:str
 
+class UserLogin(BaseModel):
+    name:str
+    password:str
+
+
+
 class UserResponse(BaseModel):
     name:str
     user_id:int

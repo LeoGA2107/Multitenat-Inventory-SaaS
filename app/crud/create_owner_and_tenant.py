@@ -29,10 +29,13 @@ async def create_owner_and_tenant(data_model:TenantUserCreate, db:AsyncSession=D
 
         )
     try:
+
         db.add(new_tenant)
         await db.commit()
-        await db.refresh(new_tenant)
-        
+        await db.refresh(new_user)
+
+        return new_user
+    
     except IntegrityError as err:
 
         await db.rollback()

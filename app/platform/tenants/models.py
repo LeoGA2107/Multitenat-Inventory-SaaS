@@ -26,6 +26,7 @@ class User(Base, TimestampMixin):
     phone_number:Mapped[int]=mapped_column()
     role:Mapped[str]=mapped_column()
     password : Mapped [str]=mapped_column()
+    is_active: Mapped[bool]=mapped_column()
 
     tenant: Mapped["Tenant"]=relationship(back_populates="users")
     tenant_id: Mapped[int]=mapped_column(ForeignKey("tenants.tenant_id"), index = True)
