@@ -23,10 +23,9 @@ class User(Base, TimestampMixin):
     user_id : Mapped[int]=mapped_column(index=True, primary_key=True)
     username : Mapped[str]=mapped_column()
     email : Mapped[str] = mapped_column(unique = True, index=True)
-    phone_number:Mapped[int]=mapped_column()
+    phone_number:Mapped[str]=mapped_column()
     role:Mapped[str]=mapped_column()
     password : Mapped [str]=mapped_column()
-    is_active: Mapped[bool]=mapped_column()
-
+    is_active: Mapped[bool]=mapped_column(default=True, server_default="true")
     tenant: Mapped["Tenant"]=relationship(back_populates="users")
     tenant_id: Mapped[int]=mapped_column(ForeignKey("tenants.tenant_id"), index = True)

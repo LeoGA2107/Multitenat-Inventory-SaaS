@@ -10,7 +10,6 @@ class TenantUserCreate(BaseModel):
     name:str
     email:EmailStr
     phone_number:Optional[str]=None
-    role:str
     password:str
 
 class UserCreate(BaseModel):
@@ -31,6 +30,8 @@ class UserResponse(BaseModel):
     user_id:int
     email:EmailStr
     tenant_id:int
+    role:str
+    is_active:bool
     created_at:datetime
     updated_at:datetime
 
@@ -55,4 +56,12 @@ class TenantResponse(BaseModel):
 
 class GetUser(BaseModel):
     user:str
+
+
+
+class TenantAndOwner(BaseModel):
+    tenant:TenantResponse
+    owner:UserResponse
+
+    model_config = ConfigDict(from_attributes=True)
 
